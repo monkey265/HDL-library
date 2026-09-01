@@ -23,6 +23,14 @@ inside the project, not a top-level `$HOME` dot-directory. If you see `ghdl`
 error with `cannot open ...` pointing at a `site-packages/vunit/...` path,
 this is that same restriction.
 
+### NVC
+
+```sh
+VUNIT_SIMULATOR=nvc uv run python run.py
+```
+
+Requires `nvc` on `PATH` (or set `VUNIT_NVC_PATH`).
+
 ### Questa / ModelSim
 
 ```sh
