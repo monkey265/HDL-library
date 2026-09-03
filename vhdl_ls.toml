@@ -1,0 +1,55 @@
+standard = "2008"
+
+[libraries]
+# Project library (contains synthesizable RTL and testbenches)
+lib.files = [
+  '*/*.vhd',
+  '*/*.vhdl',
+  '*/tb/*.vhd',
+  '*/tb/*.vhdl',
+]
+
+# VUnit verification library
+[libraries.vunit_lib]
+files = [
+  # Local virtual environment (.venv)
+  '.venv/lib/python3.11/site-packages/vunit/vhdl/*.vhd',
+  '.venv/lib/python3.11/site-packages/vunit/vhdl/*/*.vhd',
+  '.venv/lib/python3.11/site-packages/vunit/vhdl/*/*/*.vhd',
+  '.venv/lib/python3.11/site-packages/vunit/vhdl/*/*/*/*.vhd',
+  # Fallback for other python3.x in .venv
+  '.venv/lib/python3.*/site-packages/vunit/vhdl/*.vhd',
+  '.venv/lib/python3.*/site-packages/vunit/vhdl/*/*.vhd',
+  '.venv/lib/python3.*/site-packages/vunit/vhdl/*/*/*.vhd',
+  '.venv/lib/python3.*/site-packages/vunit/vhdl/*/*/*/*.vhd',
+  # Fallback for user ~/.local site-packages
+  '${HOME}/.local/lib/python3.11/site-packages/vunit/vhdl/*.vhd',
+  '${HOME}/.local/lib/python3.11/site-packages/vunit/vhdl/*/*.vhd',
+  '${HOME}/.local/lib/python3.11/site-packages/vunit/vhdl/*/*/*.vhd',
+  '${HOME}/.local/lib/python3.11/site-packages/vunit/vhdl/*/*/*/*.vhd',
+  '${HOME}/.local/lib/python3.12/site-packages/vunit/vhdl/*.vhd',
+  '${HOME}/.local/lib/python3.12/site-packages/vunit/vhdl/*/*.vhd',
+  '${HOME}/.local/lib/python3.12/site-packages/vunit/vhdl/*/*/*.vhd',
+  '${HOME}/.local/lib/python3.12/site-packages/vunit/vhdl/*/*/*/*.vhd',
+]
+is_third_party = true
+
+# JSON for VHDL library
+[libraries.json]
+files = [
+  '.venv/lib/python3.11/site-packages/vunit/vhdl/JSON-for-VHDL/src/*.vhdl',
+  '.venv/lib/python3.*/site-packages/vunit/vhdl/JSON-for-VHDL/src/*.vhdl',
+  '${HOME}/.local/lib/python3.11/site-packages/vunit/vhdl/JSON-for-VHDL/src/*.vhdl',
+  '${HOME}/.local/lib/python3.12/site-packages/vunit/vhdl/JSON-for-VHDL/src/*.vhdl',
+]
+is_third_party = true
+
+# OSVVM Open Source VHDL Verification Methodology
+[libraries.osvvm]
+files = [
+  '.venv/lib/python3.11/site-packages/vunit/vhdl/osvvm/*.vhd',
+  '.venv/lib/python3.*/site-packages/vunit/vhdl/osvvm/*.vhd',
+  '${HOME}/.local/lib/python3.11/site-packages/vunit/vhdl/osvvm/*.vhd',
+  '${HOME}/.local/lib/python3.12/site-packages/vunit/vhdl/osvvm/*.vhd',
+]
+is_third_party = true
