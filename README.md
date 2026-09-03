@@ -22,20 +22,20 @@ Everything is provided with VUnit testbench.
 
 | Testbench | Test Case | Status | Duration |
 | :--- | :--- | :---: | :---: |
-| `axi_pkg_tb` | `test_axi_write_back_to_back` | :white_check_mark: Pass | 0.3s |
-| `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 0.5s |
-| `tb_pkg_tb` | `test_debug_mode_toggle` | :white_check_mark: Pass | 0.3s |
-| `tb_pkg_tb` | `test_file_round_trip_real` | :white_check_mark: Pass | 0.4s |
-| `tb_pkg_tb` | `test_file_round_trip_slv` | :white_check_mark: Pass | 0.4s |
-| `tb_pkg_tb` | `test_get_wait_cycles` | :white_check_mark: Pass | 0.3s |
-| `tb_pkg_tb` | `test_my_is_equal_pass_path` | :white_check_mark: Pass | 0.3s |
-| `tb_pkg_tb` | `test_random_bit_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.2s |
-| `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.2s |
-| `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.2s |
-| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.2s |
-| `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.2s |
-| `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.2s |
-| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.3s |
+| `axi_pkg_tb` | `test_axi_write_back_to_back` | :white_check_mark: Pass | 0.2s |
+| `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_debug_mode_toggle` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_file_round_trip_real` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_file_round_trip_slv` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_get_wait_cycles` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_my_is_equal_pass_path` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_random_bit_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.6s |
 
 </details>
 <!-- TEST_RESULTS_END -->
