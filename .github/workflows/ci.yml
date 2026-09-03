@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Run Tests & Update README
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up NVC
+        uses: nickg/setup-nvc@v1
+
+      - name: Run VUnit tests with NVC
+        id: test_run
+        run: |
+          VUNIT_SIMULATOR=nvc uv run python run.py -x vunit_out/xunit.xml
+        continue-on-error: true
+
+      - name: Update README table and shields
+        run: |
+          python scripts/update_readme.py vunit_out/xunit.xml
+
+      - name: Commit and push README update
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          if ! git diff --staged --quiet; then
+            git commit -m "docs: update test results and shields in README [skip ci]"
+            git push
+          fi
+
+      - name: Verify test success
+        if: steps.test_run.outcome != 'success'
+        run: |
+          echo "::error::VUnit test suite failed."
+          exit 1
