@@ -2,7 +2,7 @@
 
 <!-- SHIELDS_START -->
 [![CI](https://github.com/monkey265/HDL-library/actions/workflows/ci.yml/badge.svg)](https://github.com/monkey265/HDL-library/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-14%20passed-brightgreen)](#test-results)
+[![Tests](https://img.shields.io/badge/tests-22%20passed-brightgreen)](#test-results)
 [![Simulator](https://img.shields.io/badge/simulator-NVC-blue)](#nvc)
 <!-- SHIELDS_END -->
 
@@ -16,14 +16,15 @@ Everything is provided with VUnit testbench.
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | `axi_pkg_tb` | 2 | 2 | 0 | :white_check_mark: Pass | NVC |
 | `tb_pkg_tb` | 12 | 12 | 0 | :white_check_mark: Pass | NVC |
+| `uart_tb` | 8 | 8 | 0 | :white_check_mark: Pass | NVC |
 
 <details>
-<summary><b>Detailed Test Cases (14 passed, 0 failed)</b></summary>
+<summary><b>Detailed Test Cases (22 passed, 0 failed)</b></summary>
 
 | Testbench | Test Case | Status | Duration |
 | :--- | :--- | :---: | :---: |
 | `axi_pkg_tb` | `test_axi_write_back_to_back` | :white_check_mark: Pass | 0.2s |
-| `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 0.2s |
+| `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 0.3s |
 | `tb_pkg_tb` | `test_debug_mode_toggle` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_file_round_trip_real` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_file_round_trip_slv` | :white_check_mark: Pass | 0.1s |
@@ -35,7 +36,15 @@ Everything is provided with VUnit testbench.
 | `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.6s |
+| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.8s |
+| `uart_tb` | `test_uart_rx_receives_byte_cd` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_parity_even` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_parity_odd` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_reset_behavior` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_rx_loopback` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_sends_byte_ab` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_write_byte_procedure` | :white_check_mark: Pass | 0.1s |
 
 </details>
 <!-- TEST_RESULTS_END -->
