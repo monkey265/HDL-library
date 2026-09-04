@@ -20,30 +20,18 @@ PACKAGE tb_pkg IS
   END PROTECTED t_debug_cfg;
 
   ------------------------------------------------------------------------------
-  -- Clock period constants
+  -- Standard clock period constants
   ------------------------------------------------------------------------------
-  CONSTANT c_ad_clk_period     : TIME := 6.25 ns; -- 80  MHz
-  CONSTANT c_div_clk_period    : TIME := 12.5 ns; -- 40  MHz
-  CONSTANT c_wiz_clk_period    : TIME := 5 ns;     -- 100 MHz
-  CONSTANT c_fpga_clk_period   : TIME := 5 ns;     -- 100 MHz, independent from others
-  CONSTANT c_fpga10_clk_period : TIME := 50 ns;    -- 10  MHz, derived from fpga_clk
-
-  -- Usage:
-  -- ad_clk     <= NOT ad_clk     AFTER c_ad_clk_period;     -- 80MHz
-  -- div_clk    <= NOT div_clk    AFTER c_div_clk_period;    -- 40MHz
-  -- wiz_clk    <= NOT wiz_clk    AFTER c_wiz_clk_period;    -- 100MHz
-  -- fpga_clk   <= NOT fpga_clk   AFTER c_fpga_clk_period;   -- 100MHz independent from others
-  -- fpga10_clk <= NOT fpga10_clk AFTER c_fpga10_clk_period; -- 10MHz derived fpga_clk
+  CONSTANT c_clk_period_100mhz : TIME := 10 ns;
+  CONSTANT c_clk_period_50mhz  : TIME := 20 ns;
+  CONSTANT c_clk_period_125mhz : TIME := 8 ns;
+  CONSTANT c_clk_period_200mhz : TIME := 5 ns;
 
   ------------------------------------------------------------------------------
   -- Misc constants
   ------------------------------------------------------------------------------
   CONSTANT c_rssi_correction : INTEGER := 158;
   CONSTANT c_timer_max       : NATURAL := 1000000;
-
-  -- Memory constants
-  CONSTANT c_num_tx_mem_slots : NATURAL := 8;
-  CONSTANT c_num_tx_mem_words : NATURAL := 1024;
 
   ------------------------------------------------------------------------------
   -- Shared types
@@ -55,90 +43,6 @@ PACKAGE tb_pkg IS
   TYPE t_logic_array       IS ARRAY (NATURAL RANGE <>) OF STD_ULOGIC;
   TYPE t_real_array        IS ARRAY (NATURAL RANGE <>) OF REAL;
   TYPE t_slv_array         IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR;
-
-  ------------------------------------------------------------------------------
-  -- Custom datatypes for radio toplevel
-  ------------------------------------------------------------------------------
-
-  -- Input signals record
-  TYPE t_block_inputs IS RECORD
-    -- Clocks
-    ad_clk     : STD_LOGIC;
-    div_clk    : STD_LOGIC;
-    wiz_clk    : STD_LOGIC;
-    fpga_clk   : STD_LOGIC;
-    fpga10_clk : STD_LOGIC;
-
-    -- Resets
-    aresetn : STD_LOGIC;
-
-    -- Bram TX
-    tx_addra : STD_LOGIC_VECTOR(31 DOWNTO 0);
-    tx_dina  : STD_LOGIC_VECTOR(63 DOWNTO 0);
-    tx_ena   : STD_LOGIC;
-    tx_rsta  : STD_LOGIC;
-    tx_wea   : STD_LOGIC_VECTOR(7 DOWNTO 0);
-    tx_clka  : STD_LOGIC;
-
-    -- Bram RX
-    rx_addrb : STD_LOGIC_VECTOR(31 DOWNTO 0);
-    rx_dinb  : STD_LOGIC_VECTOR(31 DOWNTO 0);
-    rx_enb   : STD_LOGIC;
-    rx_rstb  : STD_LOGIC;
-    rx_web   : STD_LOGIC_VECTOR(3 DOWNTO 0);
-    rx_clkb  : STD_LOGIC;
-  END RECORD;
-
-  -- Output signals record
-  TYPE t_block_outputs IS RECORD
-    -- Bram TX
-    tx_douta : STD_LOGIC_VECTOR(63 DOWNTO 0);
-
-    -- Bram RX
-    rx_doutb : STD_LOGIC_VECTOR(31 DOWNTO 0);
-    irq      : STD_LOGIC;
-  END RECORD;
-
-  TYPE t_block_inputs_array  IS ARRAY (NATURAL RANGE <>) OF t_block_inputs;
-  TYPE t_block_outputs_array IS ARRAY (NATURAL RANGE <>) OF t_block_outputs;
-
-  -- Configuration for a single radio
-  TYPE t_radio_config IS RECORD
-    enable        : BOOLEAN;
-    num_packets   : INTEGER;
-    packet_len    : INTEGER;
-    packet_period : INTEGER;
-    mcs           : INTEGER RANGE 0 TO 7;
-    mode          : INTEGER RANGE 0 TO 5;
-    pos_x         : REAL;
-    pos_y         : REAL;
-    pos_z         : REAL;
-    start_delay   : INTEGER;
-    check_fcs     : BOOLEAN;
-  END RECORD;
-
-  -- Array of radio configurations (one per radio)
-  TYPE t_radio_config_array IS ARRAY (NATURAL RANGE <>) OF t_radio_config;
-
-  TYPE t_axi_debug IS RECORD
-    tx_ctrl_reg_1   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    tx_ctrl_reg_2   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    ofdm_rx_reg     : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    rx_ctrl_reg_1   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    rx_ctrl_reg_2   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    rx_ctrl_reg_3   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    rx_ctrl_reg_4   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    rssi_reg        : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    dac_sample_reg  : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    adc_sample_reg  : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    ad9361_reg      : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    timestamp_reg_1 : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    timestamp_reg_2 : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    wdg_event_cntr  : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-    last_read_reg   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
-  END RECORD;
-
-  TYPE t_axi_debug_array IS ARRAY (NATURAL RANGE <>) OF t_axi_debug;
 
   ------------------------------------------------------------------------------
   -- Procedures and functions
@@ -210,6 +114,53 @@ PACKAGE tb_pkg IS
   PROCEDURE save_real_to_file(
     file_name : STRING;
     data      : t_real_array
+  );
+
+  -- Clock and reset helpers
+  PROCEDURE wait_cycles(
+    SIGNAL   clk   : IN STD_LOGIC;
+    CONSTANT count : IN NATURAL
+  );
+
+  PROCEDURE pulse_reset(
+    SIGNAL   rst_n      : OUT STD_LOGIC;
+    SIGNAL   clk        : IN  STD_LOGIC;
+    CONSTANT num_cycles : IN  NATURAL := 5;
+    CONSTANT active_low : IN  BOOLEAN := TRUE
+  );
+
+  -- Extended random stimulus helpers
+  IMPURE FUNCTION random_integer(
+    CONSTANT min_val : IN INTEGER;
+    CONSTANT max_val : IN INTEGER;
+    CONSTANT seed1   : IN POSITIVE;
+    CONSTANT seed2   : IN POSITIVE
+  ) RETURN INTEGER;
+
+  IMPURE FUNCTION random_boolean(
+    CONSTANT prob_true : IN REAL := 0.5;
+    CONSTANT seed1     : IN POSITIVE;
+    CONSTANT seed2     : IN POSITIVE
+  ) RETURN BOOLEAN;
+
+  -- Formatting helpers
+  FUNCTION format_hex(signal_in : STD_LOGIC_VECTOR) RETURN STRING;
+
+  -- Stream handshake helpers
+  PROCEDURE push_stream(
+    SIGNAL   clk      : IN  STD_LOGIC;
+    SIGNAL   valid    : OUT STD_LOGIC;
+    SIGNAL   ready    : IN  STD_LOGIC;
+    SIGNAL   data_out : OUT STD_LOGIC_VECTOR;
+    CONSTANT data_val : IN  STD_LOGIC_VECTOR
+  );
+
+  PROCEDURE pop_stream(
+    SIGNAL   clk      : IN  STD_LOGIC;
+    SIGNAL   valid    : IN  STD_LOGIC;
+    SIGNAL   ready    : OUT STD_LOGIC;
+    SIGNAL   data_in  : IN  STD_LOGIC_VECTOR;
+    VARIABLE data_val : OUT STD_LOGIC_VECTOR
   );
 
 END PACKAGE tb_pkg;
@@ -622,5 +573,130 @@ PACKAGE BODY tb_pkg IS
     FILE_CLOSE(output_file);
     REPORT "SUCCESS: Saved " & INTEGER'IMAGE(data'LENGTH) & " real entries to " & file_name;
   END PROCEDURE save_real_to_file;
+
+  ------------------------------------------------------------------------------
+  -- Clock and reset helpers
+  ------------------------------------------------------------------------------
+  PROCEDURE wait_cycles(
+    SIGNAL   clk   : IN STD_LOGIC;
+    CONSTANT count : IN NATURAL
+  ) IS
+  BEGIN
+    cycle_loop : FOR i IN 1 TO count LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+    END LOOP cycle_loop;
+  END PROCEDURE wait_cycles;
+
+  PROCEDURE pulse_reset(
+    SIGNAL   rst_n      : OUT STD_LOGIC;
+    SIGNAL   clk        : IN  STD_LOGIC;
+    CONSTANT num_cycles : IN  NATURAL := 5;
+    CONSTANT active_low : IN  BOOLEAN := TRUE
+  ) IS
+    VARIABLE v_assert_val   : STD_LOGIC;
+    VARIABLE v_deassert_val : STD_LOGIC;
+  BEGIN
+    polarity_if : IF active_low THEN
+      v_assert_val   := '0';
+      v_deassert_val := '1';
+    ELSE
+      v_assert_val   := '1';
+      v_deassert_val := '0';
+    END IF polarity_if;
+
+    rst_n <= v_assert_val;
+    wait_cycles(clk, num_cycles);
+    WAIT UNTIL RISING_EDGE(clk);
+    rst_n <= v_deassert_val;
+    WAIT FOR 0 ns;
+  END PROCEDURE pulse_reset;
+
+  ------------------------------------------------------------------------------
+  -- Extended random stimulus helpers
+  ------------------------------------------------------------------------------
+  IMPURE FUNCTION random_integer(
+    CONSTANT min_val : IN INTEGER;
+    CONSTANT max_val : IN INTEGER;
+    CONSTANT seed1   : IN POSITIVE;
+    CONSTANT seed2   : IN POSITIVE
+  ) RETURN INTEGER IS
+    VARIABLE v_s1        : POSITIVE := seed1;
+    VARIABLE v_s2        : POSITIVE := seed2;
+    VARIABLE v_rand_real : REAL;
+    VARIABLE v_val       : INTEGER;
+  BEGIN
+    UNIFORM(v_s1, v_s2, v_rand_real);
+    v_val := min_val + INTEGER(FLOOR(v_rand_real * REAL(max_val - min_val + 1)));
+    range_clamp_if : IF v_val > max_val THEN
+      v_val := max_val;
+    ELSIF v_val < min_val THEN
+      v_val := min_val;
+    END IF range_clamp_if;
+    RETURN v_val;
+  END FUNCTION random_integer;
+
+  IMPURE FUNCTION random_boolean(
+    CONSTANT prob_true : IN REAL := 0.5;
+    CONSTANT seed1     : IN POSITIVE;
+    CONSTANT seed2     : IN POSITIVE
+  ) RETURN BOOLEAN IS
+    VARIABLE v_s1        : POSITIVE := seed1;
+    VARIABLE v_s2        : POSITIVE := seed2;
+    VARIABLE v_rand_real : REAL;
+  BEGIN
+    UNIFORM(v_s1, v_s2, v_rand_real);
+    RETURN v_rand_real < prob_true;
+  END FUNCTION random_boolean;
+
+  ------------------------------------------------------------------------------
+  -- Formatting helpers
+  ------------------------------------------------------------------------------
+  FUNCTION format_hex(signal_in : STD_LOGIC_VECTOR) RETURN STRING IS
+  BEGIN
+    RETURN "0x" & TO_HSTRING(signal_in);
+  END FUNCTION format_hex;
+
+  ------------------------------------------------------------------------------
+  -- Stream handshake helpers
+  ------------------------------------------------------------------------------
+  PROCEDURE push_stream(
+    SIGNAL   clk      : IN  STD_LOGIC;
+    SIGNAL   valid    : OUT STD_LOGIC;
+    SIGNAL   ready    : IN  STD_LOGIC;
+    SIGNAL   data_out : OUT STD_LOGIC_VECTOR;
+    CONSTANT data_val : IN  STD_LOGIC_VECTOR
+  ) IS
+  BEGIN
+    WAIT UNTIL RISING_EDGE(clk);
+    data_out <= data_val;
+    valid    <= '1';
+    handshake_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      EXIT handshake_loop WHEN ready = '1';
+    END LOOP handshake_loop;
+    valid <= '0';
+    WAIT FOR 0 ns;
+  END PROCEDURE push_stream;
+
+  PROCEDURE pop_stream(
+    SIGNAL   clk      : IN  STD_LOGIC;
+    SIGNAL   valid    : IN  STD_LOGIC;
+    SIGNAL   ready    : OUT STD_LOGIC;
+    SIGNAL   data_in  : IN  STD_LOGIC_VECTOR;
+    VARIABLE data_val : OUT STD_LOGIC_VECTOR
+  ) IS
+  BEGIN
+    WAIT UNTIL RISING_EDGE(clk);
+    ready <= '1';
+    capture_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      capture_check_if : IF valid = '1' THEN
+        data_val := data_in;
+        EXIT capture_loop;
+      END IF capture_check_if;
+    END LOOP capture_loop;
+    ready <= '0';
+    WAIT FOR 0 ns;
+  END PROCEDURE pop_stream;
 
 END PACKAGE BODY tb_pkg;
