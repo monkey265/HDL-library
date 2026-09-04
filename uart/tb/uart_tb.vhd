@@ -64,7 +64,7 @@ ARCHITECTURE tb OF uart_tb IS
   SIGNAL s_rx_err_par     : STD_LOGIC;
 
   ------------------------------------------------------------------------------
-  -- Low-level byte-write procedure (from diplomova-prace uart_tb)
+  -- Low-level byte-write procedure
   ------------------------------------------------------------------------------
   PROCEDURE uart_write_byte (
     data_in         : IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -227,7 +227,7 @@ BEGIN
       WAIT UNTIL rising_edge(s_clk);
 
       test_case_select_if : IF run("test_uart_tx_sends_byte_ab") THEN
-        -- Send command byte 0xAB (matches diplomova-prace uart_tb)
+        -- Send command byte 0xAB
         WAIT UNTIL rising_edge(s_clk);
         s_tx_msg     <= X"AB";
         s_tx_msg_vld <= '1';
@@ -311,7 +311,7 @@ BEGIN
         check_equal(s_tx_done, '0', "tx_done_out should be '0' during reset");
 
       ELSIF run("test_uart_rx_receives_byte_cd") THEN
-        -- Test RX receiving 0xCD via uart_write_byte (matches diplomova-prace uart_tb)
+        -- Test RX receiving 0xCD via uart_write_byte
         uart_write_byte(X"CD", s_manual_rx, c_bit_period);
         WAIT FOR c_bit_period;
         WAIT UNTIL rising_edge(s_clk);
