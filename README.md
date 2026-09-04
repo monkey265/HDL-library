@@ -49,6 +49,36 @@ Everything is provided with VUnit testbench.
 </details>
 <!-- TEST_RESULTS_END -->
 
+## Roadmap / TODO
+
+### Serial & Communication Protocols
+- [x] **UART**: Configurable baud rate, character length, and parity (`uart_tx`, `uart_rx`)
+- [ ] **I2C**: Standard (100 kHz) and Fast (400 kHz) modes (`i2c_master`, `i2c_slave`)
+- [ ] **SPI**: Modes 0, 1, 2, 3 with configurable CPOL/CPHA Master & Slave
+- [ ] **UART Stream Wrapper**: AXI4-Stream / FIFO wrapper around UART transceiver
+
+### Buffering & Clock Domain Crossing (CDC)
+- [ ] **Synchronous FIFO**: Parameterized width/depth with programmable almost-full & almost-empty flags
+- [ ] **Asynchronous Dual-Clock FIFO**: Gray-coded read/write pointers for cross-domain transfers
+- [ ] **CDC Primitives**: 2-FF/3-FF bit synchronizer, pulse toggle synchronizer, multi-bit handshake
+
+### DSP & Arithmetic Primitives
+- [ ] **NCO / DDS**: Direct digital frequency synthesizer with phase accumulator and sine LUT
+- [ ] **CORDIC**: Vectoring (magnitude/phase) and rotation (sine/cosine) modes
+- [ ] **Complex Multiplier**: Pipelined $I/Q$ complex multiplier
+- [ ] **CIC / Moving Average Filter**: Multiplierless decimation filter
+
+### Bus Infrastructure & Control
+- [x] **AXI4 Bus Driver & Records**: Shared records and transaction procedures (`axi_pkg`)
+- [ ] **AXI4-Lite Register Bank**: Memory-mapped Control and Status Register (CSR) slave core
+- [ ] **AXI4-Stream Infrastructure**: Stream FIFO, packet buffer, and round-robin arbiter
+
+### Hardware Utilities
+- [x] **Testbench Utilities**: Timing, conversion, file I/O, and random stimulus helpers (`tb_pkg`)
+- [ ] **CRC Generator / Checker**: Parameterized polynomial (CRC-8, CRC-16, CRC-32) calculation
+- [ ] **Glitch Filter / Debouncer**: Multi-sample hysteresis filter for noisy input pins
+- [ ] **PWM Controller**: High-resolution PWM generator with dead-time insertion
+
 ## Running the tests
 
 Requires [`uv`](https://docs.astral.sh/uv/) and one of the simulators below on `PATH`.
