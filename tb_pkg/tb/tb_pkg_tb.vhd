@@ -28,16 +28,25 @@ ARCHITECTURE tb OF tb_pkg_tb IS
   CONSTANT c_vec2string_input : STD_LOGIC_VECTOR(7 DOWNTO 0) := "10110000";
 
   SIGNAL sig_strobe : STD_LOGIC := '0';
+  SIGNAL s_clk      : STD_LOGIC := '0';
+  SIGNAL s_rst_n    : STD_LOGIC := '1';
+  SIGNAL s_valid    : STD_LOGIC := '0';
+  SIGNAL s_ready    : STD_LOGIC := '0';
+  SIGNAL s_stream   : STD_LOGIC_VECTOR(7 DOWNTO 0) := (OTHERS => '0');
 
 BEGIN
 
+  s_clk <= NOT s_clk AFTER 5 ns; -- 100 MHz clock
+
   main : PROCESS
-    VARIABLE v_slv_data      : t_slv_array(0 TO 3)(7 DOWNTO 0);
-    VARIABLE v_slv_readback  : t_slv_array(0 TO 3)(7 DOWNTO 0);
-    VARIABLE v_real_data     : t_real_array(0 TO 3);
-    VARIABLE v_real_readback : t_real_array(0 TO 3);
-    VARIABLE v_t_start       : TIME;
-    VARIABLE v_elapsed       : TIME;
+    VARIABLE v_slv_data        : t_slv_array(0 TO 3)(7 DOWNTO 0);
+    VARIABLE v_slv_readback    : t_slv_array(0 TO 3)(7 DOWNTO 0);
+    VARIABLE v_real_data       : t_real_array(0 TO 3);
+    VARIABLE v_real_readback   : t_real_array(0 TO 3);
+    VARIABLE v_t_start         : TIME;
+    VARIABLE v_elapsed         : TIME;
+    VARIABLE v_int             : INTEGER;
+    VARIABLE v_stream_captured : STD_LOGIC_VECTOR(7 DOWNTO 0);
   BEGIN
     test_runner_setup(runner, runner_cfg);
 
@@ -118,6 +127,35 @@ BEGIN
         debug_msg("This debug message is enabled");
         set_debug_mode(FALSE);
         check(NOT is_debug_mode, "debug mode should be restored to FALSE");
+
+      ELSIF run("test_wait_cycles") THEN
+        WAIT UNTIL RISING_EDGE(s_clk);
+        v_t_start := NOW;
+        wait_cycles(s_clk, 4);
+        check_equal(NOW - v_t_start, 40 ns, "wait_cycles(4) on 10ns clock should wait 40ns");
+
+      ELSIF run("test_pulse_reset") THEN
+        pulse_reset(s_rst_n, s_clk, 3, TRUE);
+        check_equal(s_rst_n, '1', "pulse_reset active-low should return deasserted high");
+
+      ELSIF run("test_format_hex") THEN
+        check_equal(format_hex(STD_LOGIC_VECTOR'(X"DEADBEEF")), STRING'("0xDEADBEEF"), "format_hex should format 32-bit hex with 0x prefix");
+
+      ELSIF run("test_random_integer_in_range") THEN
+        FOR i IN 1 TO 20 LOOP
+          v_int := random_integer(10, 20, 100 + i, 200 + i);
+          check(v_int >= 10 AND v_int <= 20, "random_integer must be within [10, 20]");
+        END LOOP;
+
+      ELSIF run("test_random_boolean") THEN
+        check_equal(random_boolean(1.0, 100, 200), TRUE, "prob 1.0 must be true");
+        check_equal(random_boolean(0.0, 100, 200), FALSE, "prob 0.0 must be false");
+
+      ELSIF run("test_push_stream") THEN
+        s_ready <= '1';
+        push_stream(s_clk, s_valid, s_ready, s_stream, X"A5");
+        check_equal(s_valid, '0', "push_stream should deassert valid after handshake");
+        check_equal(s_stream, STD_LOGIC_VECTOR'(X"A5"), "push_stream should drive correct data");
 
       END IF;
 
