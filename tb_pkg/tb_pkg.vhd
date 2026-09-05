@@ -146,23 +146,6 @@ PACKAGE tb_pkg IS
   -- Formatting helpers
   FUNCTION format_hex(signal_in : STD_LOGIC_VECTOR) RETURN STRING;
 
-  -- Stream handshake helpers
-  PROCEDURE push_stream(
-    SIGNAL   clk      : IN  STD_LOGIC;
-    SIGNAL   valid    : OUT STD_LOGIC;
-    SIGNAL   ready    : IN  STD_LOGIC;
-    SIGNAL   data_out : OUT STD_LOGIC_VECTOR;
-    CONSTANT data_val : IN  STD_LOGIC_VECTOR
-  );
-
-  PROCEDURE pop_stream(
-    SIGNAL   clk      : IN  STD_LOGIC;
-    SIGNAL   valid    : IN  STD_LOGIC;
-    SIGNAL   ready    : OUT STD_LOGIC;
-    SIGNAL   data_in  : IN  STD_LOGIC_VECTOR;
-    VARIABLE data_val : OUT STD_LOGIC_VECTOR
-  );
-
 END PACKAGE tb_pkg;
 
 PACKAGE BODY tb_pkg IS
@@ -655,48 +638,5 @@ PACKAGE BODY tb_pkg IS
   BEGIN
     RETURN "0x" & TO_HSTRING(signal_in);
   END FUNCTION format_hex;
-
-  ------------------------------------------------------------------------------
-  -- Stream handshake helpers
-  ------------------------------------------------------------------------------
-  PROCEDURE push_stream(
-    SIGNAL   clk      : IN  STD_LOGIC;
-    SIGNAL   valid    : OUT STD_LOGIC;
-    SIGNAL   ready    : IN  STD_LOGIC;
-    SIGNAL   data_out : OUT STD_LOGIC_VECTOR;
-    CONSTANT data_val : IN  STD_LOGIC_VECTOR
-  ) IS
-  BEGIN
-    WAIT UNTIL RISING_EDGE(clk);
-    data_out <= data_val;
-    valid    <= '1';
-    handshake_loop : LOOP
-      WAIT UNTIL RISING_EDGE(clk);
-      EXIT handshake_loop WHEN ready = '1';
-    END LOOP handshake_loop;
-    valid <= '0';
-    WAIT FOR 0 ns;
-  END PROCEDURE push_stream;
-
-  PROCEDURE pop_stream(
-    SIGNAL   clk      : IN  STD_LOGIC;
-    SIGNAL   valid    : IN  STD_LOGIC;
-    SIGNAL   ready    : OUT STD_LOGIC;
-    SIGNAL   data_in  : IN  STD_LOGIC_VECTOR;
-    VARIABLE data_val : OUT STD_LOGIC_VECTOR
-  ) IS
-  BEGIN
-    WAIT UNTIL RISING_EDGE(clk);
-    ready <= '1';
-    capture_loop : LOOP
-      WAIT UNTIL RISING_EDGE(clk);
-      capture_check_if : IF valid = '1' THEN
-        data_val := data_in;
-        EXIT capture_loop;
-      END IF capture_check_if;
-    END LOOP capture_loop;
-    ready <= '0';
-    WAIT FOR 0 ns;
-  END PROCEDURE pop_stream;
 
 END PACKAGE BODY tb_pkg;

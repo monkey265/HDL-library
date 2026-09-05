@@ -30,23 +30,19 @@ ARCHITECTURE tb OF tb_pkg_tb IS
   SIGNAL sig_strobe : STD_LOGIC := '0';
   SIGNAL s_clk      : STD_LOGIC := '0';
   SIGNAL s_rst_n    : STD_LOGIC := '1';
-  SIGNAL s_valid    : STD_LOGIC := '0';
-  SIGNAL s_ready    : STD_LOGIC := '0';
-  SIGNAL s_stream   : STD_LOGIC_VECTOR(7 DOWNTO 0) := (OTHERS => '0');
 
 BEGIN
 
   s_clk <= NOT s_clk AFTER 5 ns; -- 100 MHz clock
 
   main : PROCESS
-    VARIABLE v_slv_data        : t_slv_array(0 TO 3)(7 DOWNTO 0);
-    VARIABLE v_slv_readback    : t_slv_array(0 TO 3)(7 DOWNTO 0);
-    VARIABLE v_real_data       : t_real_array(0 TO 3);
-    VARIABLE v_real_readback   : t_real_array(0 TO 3);
-    VARIABLE v_t_start         : TIME;
-    VARIABLE v_elapsed         : TIME;
-    VARIABLE v_int             : INTEGER;
-    VARIABLE v_stream_captured : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    VARIABLE v_slv_data      : t_slv_array(0 TO 3)(7 DOWNTO 0);
+    VARIABLE v_slv_readback  : t_slv_array(0 TO 3)(7 DOWNTO 0);
+    VARIABLE v_real_data     : t_real_array(0 TO 3);
+    VARIABLE v_real_readback : t_real_array(0 TO 3);
+    VARIABLE v_t_start       : TIME;
+    VARIABLE v_elapsed       : TIME;
+    VARIABLE v_int           : INTEGER;
   BEGIN
     test_runner_setup(runner, runner_cfg);
 
@@ -150,12 +146,6 @@ BEGIN
       ELSIF run("test_random_boolean") THEN
         check_equal(random_boolean(1.0, 100, 200), TRUE, "prob 1.0 must be true");
         check_equal(random_boolean(0.0, 100, 200), FALSE, "prob 0.0 must be false");
-
-      ELSIF run("test_push_stream") THEN
-        s_ready <= '1';
-        push_stream(s_clk, s_valid, s_ready, s_stream, X"A5");
-        check_equal(s_valid, '0', "push_stream should deassert valid after handshake");
-        check_equal(s_stream, STD_LOGIC_VECTOR'(X"A5"), "push_stream should drive correct data");
 
       END IF;
 
