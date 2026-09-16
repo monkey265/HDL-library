@@ -24,36 +24,36 @@ Everything is provided with VUnit testbench.
 | Testbench | Test Case | Status | Duration |
 | :--- | :--- | :---: | :---: |
 | `axi_pkg_tb` | `test_axi_write_back_to_back` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 0.1s |
+| `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 0.2s |
 | `axi_pkg_tb` | `test_axis_pop` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_axis_push_handshake` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_axis_push_with_tlast` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_stream_wrappers` | :white_check_mark: Pass | 0.1s |
+| `axi_pkg_tb` | `test_axis_push_handshake` | :white_check_mark: Pass | 0.2s |
+| `axi_pkg_tb` | `test_axis_push_with_tlast` | :white_check_mark: Pass | 0.2s |
+| `axi_pkg_tb` | `test_stream_wrappers` | :white_check_mark: Pass | 0.2s |
 | `tb_pkg_tb` | `test_debug_mode_toggle` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_file_round_trip_real` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_file_round_trip_slv` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_format_hex` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_get_wait_cycles` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_my_is_equal_pass_path` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_my_is_equal_pass_path` | :white_check_mark: Pass | 0.2s |
 | `tb_pkg_tb` | `test_pulse_reset` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_random_bit_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_random_boolean` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_random_integer_in_range` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.9s |
-| `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_random_boolean` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_random_integer_in_range` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.5s |
+| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.2s |
 | `tb_pkg_tb` | `test_wait_cycles` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_rx_receives_byte_cd` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_rx_receives_byte_cd` | :white_check_mark: Pass | 0.2s |
 | `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_parity_even` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_parity_odd` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_reset_behavior` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_rx_loopback` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_sends_byte_ab` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_write_byte_procedure` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_parity_even` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_tx_parity_odd` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_tx_reset_behavior` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_tx_rx_loopback` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_tx_sends_byte_ab` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_write_byte_procedure` | :white_check_mark: Pass | 0.2s |
 
 </details>
 <!-- TEST_RESULTS_END -->
@@ -130,3 +130,81 @@ Requires `vsim`, `vcom`, and `vlib` on `PATH` (or set `VUNIT_MODELSIM_PATH`).
 uv run python run.py -l          # list all test cases without running them
 uv run python run.py <pattern>   # run only tests matching <pattern>
 ```
+
+## Waveform Display & Viewer Integration (`wavedisp`)
+
+Waveform layouts are described once in Python using [`wavedisp`](https://github.com/cclienti/wavedisp) and version-controlled alongside the RTL (`*.wave.py`). They can be rendered into save files/scripts for multiple waveform viewers:
+
+- **GTKWave**: TCL startup script (`.gtkwave.tcl`) or `.gtkw` save file
+- **Surfer**: Command file (`.sucl`)
+- **ModelSim / Questa**: TCL script (`.modelsim.tcl`)
+- **Aldec Riviera-PRO**: TCL script (`.rivierapro.tcl`)
+- **Graphviz**: DOT hierarchy AST graph (`.dot`)
+
+### Opening in GUI with VUnit
+
+When running VUnit with `--gui` (`-g`), `run.py` automatically detects existing `*.wave.py` descriptions, generates the corresponding viewer script, and pre-loads the formatted waveforms (radix, colors, groups, dividers):
+
+```sh
+# NVC + GTKWave (auto-loads wavedisp layout)
+VUNIT_SIMULATOR=nvc uv run python run.py --gui lib.uart_tb.test_uart_tx_sends_byte_ab
+
+# GHDL + GTKWave
+VUNIT_SIMULATOR=ghdl uv run python run.py --gui lib.uart_tb.test_uart_tx_sends_byte_ab
+```
+
+### Viewing with Surfer
+
+[Surfer](https://gitlab.com/surfer-project/surfer) is a modern, extensible Rust-based waveform viewer supporting VCD and FST files.
+
+#### Installation
+
+Download prebuilt Linux binaries from [Surfer Releases](https://gitlab.com/surfer-project/surfer/-/releases) or build via Cargo:
+
+```sh
+# Copy downloaded binary to ~/.local/bin (ensure ~/.local/bin is on PATH):
+install -m 755 surfer ~/.local/bin/surfer
+
+# Verify installation:
+surfer --version
+```
+
+#### Running Tests with Surfer
+
+When `--surfer` is passed, `run.py` automatically enables waveform dumping during simulation, compiles the `.wave.py` layout into a Surfer command file (`.sucl`) using `wavedisp`, and launches Surfer:
+
+```sh
+VUNIT_SIMULATOR=nvc uv run python run.py --surfer lib.uart_tb.test_uart_tx_sends_byte_ab
+```
+
+Or manually:
+
+```sh
+# 1. Generate the Surfer command file
+uv run wavedisp -t surfer -o uart/tb/uart_tb.sucl uart/tb/uart_tb.wave.py
+
+# 2. Open waveform dump with the command file
+surfer dump.fst --command-file uart/tb/uart_tb.sucl
+```
+
+### Generating & Validating Wave Descriptions
+
+Generate layout files for all testbenches:
+
+```sh
+# Generate GTKWave scripts:
+uv run python scripts/generate_waves.py -t gtkwave
+
+# Generate Surfer command files:
+uv run python scripts/generate_waves.py -t surfer
+```
+
+Validate all `*.wave.py` descriptions against live simulation dumps:
+
+```sh
+uv run python scripts/generate_waves.py --check-all
+```
+
+If any port or signal is renamed or missing in the dump, `wavedisp` reports the exact file and line number and exits with an error, preventing waveform layouts from silently drifting out of date.
+
+

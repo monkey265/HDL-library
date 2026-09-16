@@ -1,2 +1,19 @@
 vunit_out/
 .venv/
+work/
+__pycache__/
+*.pyc
+
+# Simulation waveform dumps
+*.fst
+*.fst.hier
+*.vcd
+*.ghw
+
+# Generated wavedisp save files and scripts
+*.gtkw
+*.gtkwave.tcl
+*.sucl
+*.modelsim.tcl
+*.rivierapro.tcl
+*.dot

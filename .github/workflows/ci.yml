@@ -48,8 +48,13 @@ jobs:
             git push
           fi
 
+      - name: Verify wavedisp waveform descriptions
+        run: |
+          uv run python scripts/generate_waves.py --check-all
+
       - name: Verify test success
         if: steps.test_run.outcome != 'success'
         run: |
           echo "::error::VUnit test suite failed."
           exit 1
+
