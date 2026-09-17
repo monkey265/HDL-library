@@ -172,11 +172,25 @@ class vunit_pkg:
                     break
 
     # ---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
     # CLI and Runner conveniences
     # ---------------------------------------------------------------------------
     @staticmethod
+    def auto_detect_simulator() -> str:
+        """Set VUNIT_SIMULATOR environment variable if not already set, preferring NVC."""
+        if "VUNIT_SIMULATOR" not in os.environ:
+            if shutil.which("nvc"):
+                os.environ["VUNIT_SIMULATOR"] = "nvc"
+            elif shutil.which("vsim"):
+                os.environ["VUNIT_SIMULATOR"] = "modelsim"
+            elif shutil.which("ghdl"):
+                os.environ["VUNIT_SIMULATOR"] = "ghdl"
+        return os.environ.get("VUNIT_SIMULATOR", "nvc")
+
+    @staticmethod
     def create_cli() -> VUnitCLI:
-        """Create a VUnitCLI instance extended with wavedisp options."""
+        """Create a VUnitCLI instance extended with wavedisp and coverage options."""
+        vunit_pkg.auto_detect_simulator()
         cli = VUnitCLI()
         cli.parser.add_argument(
             "--wave-target",
@@ -196,12 +210,30 @@ class vunit_pkg:
             default=False,
             help="Run simulation and open waveform in Surfer using wavedisp layout",
         )
+
+        from .vunit_coverage_pkg import vunit_coverage_pkg
+
+        vunit_coverage_pkg.add_cli_options(cli)
         return cli
 
     @staticmethod
     def main(vu: VUnit, lib, args, root: Path | None = None):
-        """Run VUnit with automated wavedisp configuration and post-run handling."""
+        """Run VUnit with automated wavedisp configuration, coverage, and post-run handling."""
+        vunit_pkg.auto_detect_simulator()
         out_path = Path(args.output_path) if args.output_path else ((root or Path.cwd()) / "vunit_out")
+
+        enable_coverage = getattr(args, "coverage", False)
+        if enable_coverage:
+            from .vunit_coverage_pkg import vunit_coverage_pkg
+
+            vunit_coverage_pkg.clean_stale_coverage(out_path)
+            vunit_coverage_pkg.configure_coverage(
+                vu,
+                lib,
+                out_path,
+                spec_file=getattr(args, "coverage_spec", None),
+            )
+
         vunit_pkg.configure_wavedisp(
             lib,
             out_path,
@@ -213,7 +245,16 @@ class vunit_pkg:
             vunit_pkg.handle_wave_target(lib, args.wave_target, root=root)
 
         def post_run_handler(results):
+            if enable_coverage:
+                from .vunit_coverage_pkg import vunit_coverage_pkg
+
+                vunit_coverage_pkg.process_coverage(
+                    out_path,
+                    generate_html=not getattr(args, "no_coverage_html", False),
+                )
+
             if args.surfer:
                 vunit_pkg.handle_surfer(lib, out_path, root=root)
 
-        vu.main(post_run=post_run_handler if args.surfer else None)
+        has_post_run = enable_coverage or args.surfer
+        vu.main(post_run=post_run_handler if has_post_run else None)
