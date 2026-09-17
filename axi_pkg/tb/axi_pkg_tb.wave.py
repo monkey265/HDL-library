@@ -9,11 +9,11 @@ def generator():
 
     # Clock
     testbench.add(Divider('Clock'))
-    testbench.add(Disp('clk'))
+    testbench.add(Disp('s_clk'))
 
     # AXI4 Write Address & Data Channels (Master -> Slave)
-    axi_in = testbench.add(Group('AXI4 Inputs (axi_in)'))
-    axi_in_hier = axi_in.add(Hierarchy('axi_in'))
+    axi_in = testbench.add(Group('AXI4 Inputs (s_axi_in)'))
+    axi_in_hier = axi_in.add(Hierarchy('s_axi_in'))
     axi_in_hier.add(Disp(['s_axi_awvalid', 's_axi_awlen']))
     axi_in_hier.add(Disp('s_axi_awaddr', radix='hexadecimal'))
     axi_in_hier.add(Disp(['s_axi_wvalid', 's_axi_wlast']))
@@ -24,8 +24,8 @@ def generator():
     axi_in_hier.add(Disp('s_axi_rready'))
 
     # AXI4 Outputs & Responses (Slave -> Master)
-    axi_out = testbench.add(Group('AXI4 Outputs (axi_out)'))
-    axi_out_hier = axi_out.add(Hierarchy('axi_out'))
+    axi_out = testbench.add(Group('AXI4 Outputs (s_axi_out)'))
+    axi_out_hier = axi_out.add(Hierarchy('s_axi_out'))
     axi_out_hier.add(Disp('s_axi_awready'))
     axi_out_hier.add(Disp('s_axi_wready'))
     axi_out_hier.add(Disp(['s_axi_bvalid', 's_axi_bid']))

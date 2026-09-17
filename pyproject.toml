@@ -6,3 +6,8 @@ dependencies = [
     "vunit_hdl",
     "wavedisp>=1.0.7",
 ]
+
+[dependency-groups]
+dev = [
+    "vsg>=3.35.0",
+]
