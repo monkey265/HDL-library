@@ -40,11 +40,11 @@ Everything is provided with VUnit testbench.
 | `tb_pkg_tb` | `test_random_boolean` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_random_integer_in_range` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.2s |
-| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.6s |
+| `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_wait_cycles` | :white_check_mark: Pass | 0.1s |
 | `uart_tb` | `test_uart_rx_receives_byte_cd` | :white_check_mark: Pass | 0.1s |
 | `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.1s |
@@ -187,7 +187,12 @@ uv run wavedisp -t surfer -o uart/tb/uart_tb.sucl uart/tb/uart_tb.wave.py
 surfer dump.fst --command-file uart/tb/uart_tb.sucl
 ```
 
+#### Keybindings & Configuration
+
+This repository includes a pre-configured [`.surfer/config.toml`](.surfer/config.toml) with Questa/ModelSim-style keybindings (`i`/`o` to zoom in/out, `f` for zoom to fit, `c` for zoom to cursor, `Home`/`End` to navigate start/end, and arrow keys for edge transitions). Surfer automatically loads this configuration when launched from the repository root.
+
 ### Generating & Validating Wave Descriptions
+
 
 Generate layout files for all testbenches:
 

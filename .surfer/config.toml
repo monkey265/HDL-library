@@ -1,0 +1,40 @@
+# Surfer configuration with Questa / ModelSim keybindings
+# Project location: .surfer/config.toml
+
+[behavior]
+keep_during_reload = true
+file_history_size = 10
+arrow_key_bindings = "Edge"                   # Left/Right arrow jumps to prev/next transition
+primary_button_drag_behavior = "Cursor"        # Left-click drags/places cursor
+
+[shortcuts]
+# Questa-style Zooming
+zoom_in = ["I", "Plus", "Equals"]             # 'i' zooms in (Questa standard)
+zoom_out = ["O", "Minus"]                     # 'o' zooms out (Questa standard)
+zoom_to_fit = ["F", "Shift+F"]                # 'f' zooms full / fit
+zoom_to_cursor = ["C", "Shift+Z"]             # 'c' zooms to cursor
+
+# Questa-style Navigation
+goto_start = ["Home", "S"]                    # 'Home' jumps to simulation start
+goto_end = ["End", "E"]                       # 'End' jumps to simulation end
+scroll_up = ["PageUp"]
+scroll_down = ["PageDown"]
+
+# Editing & Markers
+delete_selected = ["Delete", "X"]             # 'Delete' removes selected signal
+group_new = ["G"]
+select_all = ["Command+A"]
+undo = ["Command+Z", "U"]
+redo = ["Command+Shift+Z", "Command+Y"]
+marker_add = ["M"]
+reload_waveform = ["R"]
+
+# Search & Panels
+focus_variable_name_filter = ["Command+F", "V"] # 'Ctrl+F' opens signal filter
+toggle_side_panel = ["B"]
+toggle_toolbar = ["T"]
+toggle_menu = ["Alt+M"]
+show_command_prompt = ["Space"]
+rename_item = ["F2"]
+divider_add = ["D"]
+go_to_time = ["Command+G"]
