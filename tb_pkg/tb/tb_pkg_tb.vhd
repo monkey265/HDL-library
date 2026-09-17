@@ -27,15 +27,15 @@ ARCHITECTURE tb OF tb_pkg_tb IS
   -- mask vec2string's bit-order behavior below.
   CONSTANT c_vec2string_input : STD_LOGIC_VECTOR(7 DOWNTO 0) := "10110000";
 
-  SIGNAL sig_strobe : STD_LOGIC := '0';
-  SIGNAL s_clk      : STD_LOGIC := '0';
-  SIGNAL s_rst_n    : STD_LOGIC := '1';
+  SIGNAL s_sig_strobe : STD_LOGIC := '0';
+  SIGNAL s_clk        : STD_LOGIC := '0';
+  SIGNAL s_rst_n      : STD_LOGIC := '1';
 
 BEGIN
 
   s_clk <= NOT s_clk AFTER 5 ns; -- 100 MHz clock
 
-  main : PROCESS
+  main_proc : PROCESS
     VARIABLE v_slv_data      : t_slv_array(0 TO 3)(7 DOWNTO 0);
     VARIABLE v_slv_readback  : t_slv_array(0 TO 3)(7 DOWNTO 0);
     VARIABLE v_real_data     : t_real_array(0 TO 3);
@@ -81,10 +81,10 @@ BEGIN
 
       ELSIF run("test_strobe_pulses_for_two_periods") THEN
         v_t_start := NOW;
-        strobe(sig_strobe, 10 ns, '1');
+        strobe(s_sig_strobe, 10 ns, '1');
         v_elapsed := NOW - v_t_start;
         check(v_elapsed = 20 ns, "strobe should hold active then inactive for one period_ns each");
-        check_equal(sig_strobe, '0', "strobe should leave the signal deasserted (NOT active) when it returns");
+        check_equal(s_sig_strobe, '0', "strobe should leave the signal deasserted (NOT active) when it returns");
 
       ELSIF run("test_file_round_trip_slv") THEN
         v_slv_data(0) := X"AA";
@@ -152,6 +152,6 @@ BEGIN
     END LOOP;
 
     test_runner_cleanup(runner);
-  END PROCESS main;
+  END PROCESS main_proc;
 
 END ARCHITECTURE tb;

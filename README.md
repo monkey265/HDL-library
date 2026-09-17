@@ -3,8 +3,8 @@
 <!-- SHIELDS_START -->
 [![CI](https://github.com/monkey265/HDL-library/actions/workflows/ci.yml/badge.svg)](https://github.com/monkey265/HDL-library/actions/workflows/ci.yml)
 [![Tests](https://img.shields.io/badge/tests-31%20passed-brightgreen)](#test-results)
-[![Coverage](https://img.shields.io/badge/coverage-40.0%25-red)](#code-coverage)
 [![Simulator](https://img.shields.io/badge/simulator-NVC-blue)](#nvc)
+[![Code Style: VSG](https://img.shields.io/badge/code%20style-VSG-blueviolet)](#vhdl-linting--code-formatting-vsg)
 <!-- SHIELDS_END -->
 
 This is my personal library containing stuff I use repeatedly.
@@ -24,37 +24,37 @@ Everything is provided with VUnit testbench.
 
 | Testbench | Test Case | Status | Duration |
 | :--- | :--- | :---: | :---: |
-| `axi_pkg_tb` | `test_axi_write_back_to_back` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_axis_pop` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_axis_push_handshake` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_axis_push_with_tlast` | :white_check_mark: Pass | 0.1s |
-| `axi_pkg_tb` | `test_stream_wrappers` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_debug_mode_toggle` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_file_round_trip_real` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_file_round_trip_slv` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_format_hex` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_get_wait_cycles` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_my_is_equal_pass_path` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_pulse_reset` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_random_bit_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_random_boolean` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_random_integer_in_range` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.5s |
-| `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.1s |
+| `axi_pkg_tb` | `test_axi_write_back_to_back` | :white_check_mark: Pass | 0.4s |
+| `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 1.0s |
+| `axi_pkg_tb` | `test_axis_pop` | :white_check_mark: Pass | 0.3s |
+| `axi_pkg_tb` | `test_axis_push_handshake` | :white_check_mark: Pass | 0.3s |
+| `axi_pkg_tb` | `test_axis_push_with_tlast` | :white_check_mark: Pass | 0.3s |
+| `axi_pkg_tb` | `test_stream_wrappers` | :white_check_mark: Pass | 0.4s |
+| `tb_pkg_tb` | `test_debug_mode_toggle` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_file_round_trip_real` | :white_check_mark: Pass | 0.4s |
+| `tb_pkg_tb` | `test_file_round_trip_slv` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_format_hex` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_get_wait_cycles` | :white_check_mark: Pass | 0.4s |
+| `tb_pkg_tb` | `test_my_is_equal_pass_path` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_pulse_reset` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_random_bit_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_random_boolean` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_random_integer_in_range` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.4s |
+| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.4s |
+| `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.4s |
+| `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.3s |
 | `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.3s |
-| `tb_pkg_tb` | `test_wait_cycles` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_rx_receives_byte_cd` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_parity_even` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_parity_odd` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_reset_behavior` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_rx_loopback` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_sends_byte_ab` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_write_byte_procedure` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_wait_cycles` | :white_check_mark: Pass | 0.3s |
+| `uart_tb` | `test_uart_rx_receives_byte_cd` | :white_check_mark: Pass | 0.3s |
+| `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.3s |
+| `uart_tb` | `test_uart_tx_parity_even` | :white_check_mark: Pass | 0.3s |
+| `uart_tb` | `test_uart_tx_parity_odd` | :white_check_mark: Pass | 0.3s |
+| `uart_tb` | `test_uart_tx_reset_behavior` | :white_check_mark: Pass | 0.3s |
+| `uart_tb` | `test_uart_tx_rx_loopback` | :white_check_mark: Pass | 0.3s |
+| `uart_tb` | `test_uart_tx_sends_byte_ab` | :white_check_mark: Pass | 0.3s |
+| `uart_tb` | `test_uart_write_byte_procedure` | :white_check_mark: Pass | 0.3s |
 
 </details>
 <!-- TEST_RESULTS_END -->
@@ -66,7 +66,9 @@ Everything is provided with VUnit testbench.
 | :--- | :---: | :---: | :---: |
 | `axi_pkg_tb.vhd` | 21 / 67 | 31.3% | 14.3% |
 | `tb_pkg_tb.vhd` | 7 / 84 | 8.3% | 5.6% |
+| `uart_rx.vhd` | 84 / 121 | 69.4% | 60.6% |
 | `uart_tb.vhd` | 33 / 145 | 22.8% | 20.0% |
+| `uart_tx.vhd` | 55 / 83 | 66.3% | 62.5% |
 | **Overall Total** | **200 / 500** | **40.0%** | **42.4%** |
 <!-- COVERAGE_END -->
 
@@ -223,5 +225,30 @@ uv run python scripts/generate_waves.py --check-all
 ```
 
 If any port or signal is renamed or missing in the dump, `wavedisp` reports the exact file and line number and exits with an error, preventing waveform layouts from silently drifting out of date.
+
+### VHDL Linting & Code Formatting (VSG)
+
+This project enforces VHDL coding standards and naming conventions using [VSG (VHDL Style Guide)](https://github.com/jeremiah-c-leary/vhdl-style-guide) configured via [`.vsg.yaml`](.vsg.yaml).
+
+The rules enforce:
+- **Uppercase keywords** (`ENTITY`, `ARCHITECTURE`, `PORT`, `SIGNAL`, `PROCESS`, `BEGIN`, `END`, etc.)
+- **Signal & variable prefixes**: `s_` for internal signals, `v_` for process variables
+- **Generic & constant prefixes**: `g_` for generics (with `runner_cfg` exception for VUnit), `c_` for constants
+- **Type & subtype prefixes**: `t_` for custom types, `st_` for subtypes
+- **Process label suffixes**: `_proc` for all process blocks (e.g., `fsm_proc`, `clk_div_proc`)
+- **Direct entity instantiations**: `ENTITY work.module(arch)` instead of legacy components
+- **Indentation**: 2 spaces
+
+```sh
+# Lint all VHDL files in the project:
+uv run vsg -c .vsg.yaml
+
+# Automatically format, indent, and fix keyword casing:
+uv run vsg -c .vsg.yaml --fix
+
+# Lint or auto-format specific files:
+uv run vsg -c .vsg.yaml -f uart/uart_tx.vhd --fix
+```
+
 
 

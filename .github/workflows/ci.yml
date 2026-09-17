@@ -11,6 +11,23 @@ permissions:
   contents: write
 
 jobs:
+  lint:
+    name: VHDL Style Guide (VSG) Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Run VSG linter
+        run: |
+          uv run vsg -c .vsg.yaml
+
   test:
     name: Run Tests & Verification
     runs-on: ubuntu-latest

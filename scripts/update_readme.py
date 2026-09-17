@@ -124,6 +124,7 @@ def generate_shields(data: dict, cov_data: dict | None = None) -> str:
 
     workflow_badge = "[![CI](https://github.com/monkey265/HDL-library/actions/workflows/ci.yml/badge.svg)](https://github.com/monkey265/HDL-library/actions/workflows/ci.yml)"
     simulator_badge = "[![Simulator](https://img.shields.io/badge/simulator-NVC-blue)](#nvc)"
+    vsg_badge = "[![Code Style: VSG](https://img.shields.io/badge/code%20style-VSG-blueviolet)](#vhdl-linting--code-formatting-vsg)"
 
     badges = [workflow_badge, tests_badge]
 
@@ -139,6 +140,7 @@ def generate_shields(data: dict, cov_data: dict | None = None) -> str:
         badges.append(cov_badge)
 
     badges.append(simulator_badge)
+    badges.append(vsg_badge)
     return "\n".join(badges)
 
 

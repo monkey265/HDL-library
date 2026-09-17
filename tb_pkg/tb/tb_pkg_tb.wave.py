@@ -11,6 +11,6 @@ def generator():
     testbench.add(Disp(['s_clk', 's_rst_n']))
 
     testbench.add(Divider('Testbench Signals'))
-    testbench.add(Disp('sig_strobe'))
+    testbench.add(Disp('s_sig_strobe'))
 
     return testbench

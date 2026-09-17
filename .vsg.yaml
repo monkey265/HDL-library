@@ -1,0 +1,147 @@
+# ==============================================================================
+# VHDL Style Guide (VSG) Configuration
+# Aligned with Repository VHDL Guidelines (vhdl-guideline)
+# ==============================================================================
+
+# Target source files (avoids scanning build outputs like vunit_out, .venv, etc.)
+file_list:
+  - axi_pkg/**/*.vhd
+  - tb_pkg/**/*.vhd
+  - uart/**/*.vhd
+
+# Indentation style (2 spaces)
+indent:
+  indent_size: 2
+  indent_style: spaces
+
+rule:
+  global:
+    indent_size: 2
+    indent_style: spaces
+
+  # Group-level rules
+  group:
+    case::keyword:
+      case: upper              # Enforce ALL CAPS for all VHDL keywords (PROCESS, BEGIN, END, etc.)
+    blank_line:
+      disable: true            # Allow natural blank-line spacing
+    alignment:
+      disable: true            # Allow flexible manual column alignment
+    length:
+      disable: true            # Do not enforce strict 120-char line truncation
+    structure::optional:
+      disable: true            # Do not require optional keywords (e.g. 'is' after process)
+
+  # ----------------------------------------------------------------------------
+  # Naming Conventions (vhdl-guideline)
+  # ----------------------------------------------------------------------------
+  generic_020:
+    disable: false
+    prefixes:
+      - g_                     # Generics must have g_ prefix
+    exceptions:
+      - runner_cfg             # VUnit test runner generic exception
+
+  signal_008:
+    disable: false
+    prefixes:
+      - s_                     # Internal signals must have s_ prefix
+
+  constant_015:
+    disable: false
+    prefixes:
+      - c_                     # Constants must have c_ prefix
+
+  variable_012:
+    disable: false
+    prefixes:
+      - v_                     # Variables must have v_ prefix
+
+  type_015:
+    disable: false
+    prefixes:
+      - t_                     # Custom types must have t_ prefix
+
+  subtype_004:
+    disable: false
+    prefixes:
+      - st_                    # Subtypes must have st_ prefix
+
+  process_600:
+    disable: false
+    suffixes:
+      - _proc                  # Processes must have _proc suffix
+
+  instantiation_034:
+    method: entity             # Direct entity instantiation (ENTITY work.module(rtl))
+
+  type_500:
+    case: upper                # FSM state enumeration literals in ALL CAPS (ST_IDLE, etc.)
+
+  library_500:
+    case: upper                # Uppercase library name (LIBRARY IEEE;)
+
+  attribute_declaration_502:
+    case: upper                # Uppercase attribute types (ATTRIBUTE ... : STRING;)
+
+  entity_specification_503:
+    case: upper                # Uppercase entity class (ATTRIBUTE ... OF s_sig : SIGNAL IS ...;)
+
+  conditional_waveforms_001:
+    allow_single_line: 'yes'   # Allow concise 1-line concurrent signal assignments
+
+  # ----------------------------------------------------------------------------
+  # Disabled Intrusive Rules (Synthesizable & idiomatic VHDL practices)
+  # ----------------------------------------------------------------------------
+  if_002:
+    disable: true              # VHDL doesn't require parentheses around IF conditions
+  procedure_013:
+    disable: true              # Allow compact subprogram parameter declarations
+  procedure_100:
+    disable: true              # Allow standard procedure call syntax without extra space before '('
+  function_019:
+    disable: true              # Allow compact function parameter declarations
+  function_100:
+    disable: true              # Allow standard function call syntax without extra space before '('
+  signal_007:
+    disable: true              # Allow default signal initialization values (':= ...')
+  variable_007:
+    disable: true              # Allow default variable initialization values
+  port_012:
+    disable: true              # Allow default port values on entity inputs
+  port_007:
+    disable: true              # Allow natural spacing around IN port keyword
+  port_008:
+    disable: true              # Allow natural spacing around OUT port keyword
+  report_statement_002:
+    disable: true              # Allow single-line REPORT ... SEVERITY statements
+  assert_003:
+    disable: true              # Allow compact single-line ASSERT ... REPORT statements
+  assert_005:
+    disable: true              # Allow compact single-line ASSERT ... SEVERITY statements
+  process_012:
+    disable: true              # Do not enforce 'is' keyword on PROCESS
+  case_019:
+    disable: true              # Allow labels on CASE statements
+  case_020:
+    disable: true              # Allow labels on END CASE statements
+  comment_010:
+    disable: true              # Allow comment banner indentation
+  comment_100:
+    disable: true              # Allow separator comments (e.g. '--#SECTION')
+  type_006:
+    disable: true              # Allow alignment spacing before 'IS' in type declarations
+  type_mark_500:
+    disable: true              # Avoid case collisions between standard types and imported custom types
+  bit_string_literal_500:
+    disable: true              # Allow both upper and lowercase bit string literals (x"..." or X"...")
+  use_clause_500:
+    disable: true              # Allow standard use clause casing
+  use_clause_501:
+    disable: true              # Allow package names in use clauses (both IEEE and work.pkg)
+  use_clause_502:
+    disable: true              # Allow item names in use clauses
+  context_ref_500:
+    disable: true              # Allow VUnit context references
+  context_ref_501:
+    disable: true              # Allow VUnit context references
