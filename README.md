@@ -11,6 +11,11 @@
 This is my personal library containing stuff I use repeatedly.
 Everything is provided with VUnit testbench.
 
+> [!IMPORTANT]
+> **Regarding AXI IPs**
+> AXI IPs here provided are aimed at usage with [HDL registers](https://github.com/hdl-registers/hdl-registers).
+> They might need significant rework to work without HDL registers dependencies.
+
 ## Test Results
 
 <!-- TEST_RESULTS_START -->

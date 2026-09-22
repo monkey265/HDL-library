@@ -5,6 +5,9 @@
 
 LIBRARY IEEE;
   USE IEEE.STD_LOGIC_1164.ALL;
+  USE IEEE.NUMERIC_STD.ALL;
+
+USE work.axi_lite_pkg.ALL;
 
 PACKAGE axi_pkg IS
 
@@ -57,6 +60,87 @@ PACKAGE axi_pkg IS
   TYPE t_axi_ports_in_array  IS ARRAY (NATURAL RANGE <>) OF t_axi_ports_in;
   TYPE t_axi_ports_out_array IS ARRAY (NATURAL RANGE <>) OF t_axi_ports_out;
 
+  ------------------------------------------------------------------------------
+  -- AXI4-Lite Record Types
+  ------------------------------------------------------------------------------
+  TYPE t_axil_ports_in IS RECORD
+    -- Write address channel
+    S_AXI_AWVALID : STD_ULOGIC;
+    S_AXI_AWADDR  : STD_ULOGIC_VECTOR(31 DOWNTO 0);
+    S_AXI_AWPROT  : STD_ULOGIC_VECTOR(2 DOWNTO 0);
+
+    -- Write data channel
+    S_AXI_WVALID  : STD_ULOGIC;
+    S_AXI_WDATA   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
+    S_AXI_WSTRB   : STD_ULOGIC_VECTOR(3 DOWNTO 0);
+
+    -- Write response channel
+    S_AXI_BREADY  : STD_ULOGIC;
+
+    -- Read address channel
+    S_AXI_ARVALID : STD_ULOGIC;
+    S_AXI_ARADDR  : STD_ULOGIC_VECTOR(31 DOWNTO 0);
+    S_AXI_ARPROT  : STD_ULOGIC_VECTOR(2 DOWNTO 0);
+
+    -- Read data channel
+    S_AXI_RREADY  : STD_ULOGIC;
+  END RECORD;
+
+  TYPE t_axil_ports_out IS RECORD
+    -- Write address channel
+    S_AXI_AWREADY : STD_ULOGIC;
+
+    -- Write data channel
+    S_AXI_WREADY  : STD_ULOGIC;
+
+    -- Write response channel
+    S_AXI_BVALID  : STD_ULOGIC;
+    S_AXI_BRESP   : STD_ULOGIC_VECTOR(1 DOWNTO 0);
+
+    -- Read address channel
+    S_AXI_ARREADY : STD_ULOGIC;
+
+    -- Read data channel
+    S_AXI_RVALID  : STD_ULOGIC;
+    S_AXI_RDATA   : STD_ULOGIC_VECTOR(31 DOWNTO 0);
+    S_AXI_RRESP   : STD_ULOGIC_VECTOR(1 DOWNTO 0);
+  END RECORD;
+
+  CONSTANT c_axil_ports_in_init : t_axil_ports_in :=
+ (
+    S_AXI_AWVALID => '0',
+    S_AXI_AWADDR  => (OTHERS => '0'),
+    S_AXI_AWPROT  => (OTHERS => '0'),
+    S_AXI_WVALID  => '0',
+    S_AXI_WDATA   => (OTHERS => '0'),
+    S_AXI_WSTRB   => (OTHERS => '1'),
+    S_AXI_BREADY  => '0',
+    S_AXI_ARVALID => '0',
+    S_AXI_ARADDR  => (OTHERS => '0'),
+    S_AXI_ARPROT  => (OTHERS => '0'),
+    S_AXI_RREADY  => '0'
+  );
+
+  CONSTANT c_axil_ports_out_init : t_axil_ports_out :=
+ (
+    S_AXI_AWREADY => '0',
+    S_AXI_WREADY  => '0',
+    S_AXI_BVALID  => '0',
+    S_AXI_BRESP   => (OTHERS => '0'),
+    S_AXI_ARREADY => '0',
+    S_AXI_RVALID  => '0',
+    S_AXI_RDATA   => (OTHERS => '0'),
+    S_AXI_RRESP   => (OTHERS => '0')
+  );
+
+  TYPE t_axil_ports_in_array  IS ARRAY (NATURAL RANGE <>) OF t_axil_ports_in;
+  TYPE t_axil_ports_out_array IS ARRAY (NATURAL RANGE <>) OF t_axil_ports_out;
+
+  -- Bridges this package's flat AXI-Lite records to axi_lite_pkg's nested ones, so IPs keep this
+  -- package's naming while still plugging into axi_lite_register_file / hdl-registers output.
+  FUNCTION to_axi_lite_m2s(ports_in : t_axil_ports_in) RETURN axi_lite_m2s_t;
+  FUNCTION to_axil_ports_out(s2m : axi_lite_s2m_t) RETURN t_axil_ports_out;
+
   -- Drives a single AXI4 write transaction (address, data, and response phases).
   PROCEDURE axi_write(
     CONSTANT addr    : IN  STD_LOGIC_VECTOR(23 DOWNTO 0);
@@ -64,6 +148,24 @@ PACKAGE axi_pkg IS
     SIGNAL   clk     : IN  STD_LOGIC;
     SIGNAL   axi_in  : OUT t_axi_ports_in;
     SIGNAL   axi_out : IN  t_axi_ports_out
+  );
+
+  -- Drives a single AXI4-Lite write transaction.
+  PROCEDURE axi_lite_write(
+    CONSTANT addr    : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    CONSTANT data    : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL   clk     : IN  STD_LOGIC;
+    SIGNAL   axi_in  : OUT t_axil_ports_in;
+    SIGNAL   axi_out : IN  t_axil_ports_out
+  );
+
+  -- Drives a single AXI4-Lite read transaction and returns data.
+  PROCEDURE axi_lite_read(
+    CONSTANT addr    : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    VARIABLE data    : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL   clk     : IN  STD_LOGIC;
+    SIGNAL   axi_in  : OUT t_axil_ports_in;
+    SIGNAL   axi_out : IN  t_axil_ports_out
   );
 
   -- Drives a single AXI4-Stream transaction (valid/ready handshake).
@@ -127,6 +229,42 @@ END PACKAGE axi_pkg;
 
 PACKAGE BODY axi_pkg IS
 
+  FUNCTION to_axi_lite_m2s(ports_in : t_axil_ports_in) RETURN axi_lite_m2s_t IS
+    VARIABLE result : axi_lite_m2s_t := axi_lite_m2s_init;
+  BEGIN
+    result.write.aw.valid := ports_in.S_AXI_AWVALID;
+    result.write.aw.addr(ports_in.S_AXI_AWADDR'RANGE) := u_unsigned(ports_in.S_AXI_AWADDR);
+
+    result.write.w.valid := ports_in.S_AXI_WVALID;
+    result.write.w.data(ports_in.S_AXI_WDATA'RANGE) := ports_in.S_AXI_WDATA;
+    result.write.w.strb(ports_in.S_AXI_WSTRB'RANGE) := ports_in.S_AXI_WSTRB;
+
+    result.write.b.ready := ports_in.S_AXI_BREADY;
+
+    result.read.ar.valid := ports_in.S_AXI_ARVALID;
+    result.read.ar.addr(ports_in.S_AXI_ARADDR'RANGE) := u_unsigned(ports_in.S_AXI_ARADDR);
+
+    result.read.r.ready := ports_in.S_AXI_RREADY;
+
+    RETURN result;
+  END FUNCTION;
+
+  FUNCTION to_axil_ports_out(s2m : axi_lite_s2m_t) RETURN t_axil_ports_out IS
+    VARIABLE result : t_axil_ports_out := c_axil_ports_out_init;
+  BEGIN
+    result.S_AXI_AWREADY := s2m.write.aw.ready;
+    result.S_AXI_WREADY  := s2m.write.w.ready;
+    result.S_AXI_BVALID  := s2m.write.b.valid;
+    result.S_AXI_BRESP   := s2m.write.b.resp;
+
+    result.S_AXI_ARREADY := s2m.read.ar.ready;
+    result.S_AXI_RVALID  := s2m.read.r.valid;
+    result.S_AXI_RDATA   := s2m.read.r.data(result.S_AXI_RDATA'RANGE);
+    result.S_AXI_RRESP   := s2m.read.r.resp;
+
+    RETURN result;
+  END FUNCTION;
+
   PROCEDURE axi_write(
     CONSTANT addr    : IN  STD_LOGIC_VECTOR(23 DOWNTO 0);
     CONSTANT data    : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -158,6 +296,82 @@ PACKAGE BODY axi_pkg IS
     WAIT UNTIL RISING_EDGE(clk) AND axi_out.S_AXI_BVALID = '1';
     axi_in.S_AXI_BREADY <= '0';
   END PROCEDURE axi_write;
+
+  PROCEDURE axi_lite_write(
+    CONSTANT addr    : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    CONSTANT data    : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL   clk     : IN  STD_LOGIC;
+    SIGNAL   axi_in  : OUT t_axil_ports_in;
+    SIGNAL   axi_out : IN  t_axil_ports_out
+  ) IS
+    VARIABLE v_aw_done : BOOLEAN := FALSE;
+    VARIABLE v_w_done  : BOOLEAN := FALSE;
+  BEGIN
+    REPORT "Writing AXI-Lite address: " & TO_HSTRING(addr) & " data: " & TO_HSTRING(data);
+
+    WAIT UNTIL RISING_EDGE(clk);
+    axi_in.S_AXI_AWADDR  <= STD_ULOGIC_VECTOR(addr);
+    axi_in.S_AXI_AWVALID <= '1';
+    axi_in.S_AXI_AWPROT  <= "000";
+    axi_in.S_AXI_WDATA   <= STD_ULOGIC_VECTOR(data);
+    axi_in.S_AXI_WSTRB   <= "1111";
+    axi_in.S_AXI_WVALID  <= '1';
+
+    write_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      IF NOT v_aw_done AND axi_out.S_AXI_AWREADY = '1' THEN
+        v_aw_done := TRUE;
+        axi_in.S_AXI_AWVALID <= '0';
+      END IF;
+      IF NOT v_w_done AND axi_out.S_AXI_WREADY = '1' THEN
+        v_w_done := TRUE;
+        axi_in.S_AXI_WVALID <= '0';
+      END IF;
+      EXIT write_loop WHEN v_aw_done AND v_w_done;
+    END LOOP write_loop;
+
+    -- Write response phase
+    axi_in.S_AXI_BREADY <= '1';
+    b_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      EXIT b_loop WHEN axi_out.S_AXI_BVALID = '1';
+    END LOOP b_loop;
+    axi_in.S_AXI_BREADY <= '0';
+  END PROCEDURE axi_lite_write;
+
+  PROCEDURE axi_lite_read(
+    CONSTANT addr    : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    VARIABLE data    : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL   clk     : IN  STD_LOGIC;
+    SIGNAL   axi_in  : OUT t_axil_ports_in;
+    SIGNAL   axi_out : IN  t_axil_ports_out
+  ) IS
+  BEGIN
+    REPORT "Reading AXI-Lite address: " & TO_HSTRING(addr);
+
+    WAIT UNTIL RISING_EDGE(clk);
+    axi_in.S_AXI_ARADDR  <= STD_ULOGIC_VECTOR(addr);
+    axi_in.S_AXI_ARVALID <= '1';
+    axi_in.S_AXI_ARPROT  <= "000";
+
+    ar_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      IF axi_out.S_AXI_ARREADY = '1' THEN
+        EXIT ar_loop;
+      END IF;
+    END LOOP ar_loop;
+    axi_in.S_AXI_ARVALID <= '0';
+
+    axi_in.S_AXI_RREADY <= '1';
+    r_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      IF axi_out.S_AXI_RVALID = '1' THEN
+        data := STD_LOGIC_VECTOR(axi_out.S_AXI_RDATA);
+        EXIT r_loop;
+      END IF;
+    END LOOP r_loop;
+    axi_in.S_AXI_RREADY <= '0';
+  END PROCEDURE axi_lite_read;
 
   PROCEDURE axis_push(
     SIGNAL   clk      : IN  STD_LOGIC;
