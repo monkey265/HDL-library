@@ -48,13 +48,13 @@ Everything is provided with VUnit testbench.
 | `tb_pkg_tb` | `test_random_integer_in_range` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.5s |
+| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.3s |
 | `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.2s |
 | `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.2s |
 | `tb_pkg_tb` | `test_wait_cycles` | :white_check_mark: Pass | 0.1s |
 | `uart_tb` | `test_uart_rx_receives_byte_cd` | :white_check_mark: Pass | 0.2s |
-| `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.1s |
 | `uart_tb` | `test_uart_tx_parity_even` | :white_check_mark: Pass | 0.2s |
 | `uart_tb` | `test_uart_tx_parity_odd` | :white_check_mark: Pass | 0.1s |
 | `uart_tb` | `test_uart_tx_reset_behavior` | :white_check_mark: Pass | 0.1s |
@@ -72,7 +72,9 @@ Everything is provided with VUnit testbench.
 | :--- | :---: | :---: | :---: |
 | `axi_pkg_tb.vhd` | 21 / 67 | 31.3% | 14.3% |
 | `tb_pkg_tb.vhd` | 7 / 84 | 8.3% | 5.6% |
+| `uart_rx.vhd` | 84 / 121 | 69.4% | 60.6% |
 | `uart_tb.vhd` | 33 / 145 | 22.8% | 20.0% |
+| `uart_tx.vhd` | 55 / 83 | 66.3% | 62.5% |
 | **Overall Total** | **200 / 500** | **40.0%** | **42.4%** |
 <!-- COVERAGE_END -->
 
