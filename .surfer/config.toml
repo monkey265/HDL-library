@@ -27,7 +27,7 @@ select_all = ["Command+A"]
 undo = ["Command+Z", "U"]
 redo = ["Command+Shift+Z", "Command+Y"]
 marker_add = ["M"]
-reload_waveform = ["R"]
+reload_waveform = ["Command+R"]
 
 # Search & Panels
 focus_variable_name_filter = ["Command+F", "V"] # 'Ctrl+F' opens signal filter
