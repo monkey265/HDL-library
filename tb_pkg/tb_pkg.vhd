@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
--- Package : tb_pkg
--- Purpose : Shared testbench types, constants, and utility subprograms.
+-- Package     : tb_pkg
+-- Description : Shared testbench types, constants, and utility subprograms.
 --------------------------------------------------------------------------------
 
 LIBRARY IEEE;

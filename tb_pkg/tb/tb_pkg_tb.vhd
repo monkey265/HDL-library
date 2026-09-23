@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
--- Testbench : tb_pkg_tb
--- Purpose   : Unit tests for tb_pkg's conversion, scaling, random-stimulus,
+-- Testbench   : tb_pkg_tb
+-- Description : Unit tests for tb_pkg's conversion, scaling, random-stimulus,
 --             timing, and file I/O subprograms.
 --------------------------------------------------------------------------------
 

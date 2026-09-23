@@ -8,6 +8,9 @@ file_list:
   - axi_pkg/**/*.vhd
   - tb_pkg/**/*.vhd
   - uart/**/*.vhd
+  - axi_lite_pkg/**/*.vhd
+  - axi_lite_register_file/**/*.vhd
+  - axi_lite_pri_arbiter/**/*.vhd
 
 # Indentation style (2 spaces)
 indent:

@@ -1,13 +1,13 @@
 --------------------------------------------------------------------------------
--- Package : axi_pkg
--- Purpose : AXI4 slave-port record types and testbench bus-driver procedures.
+-- Package     : axi_pkg
+-- Description : AXI4 slave-port record types and testbench bus-driver procedures.
 --------------------------------------------------------------------------------
 
 LIBRARY IEEE;
   USE IEEE.STD_LOGIC_1164.ALL;
   USE IEEE.NUMERIC_STD.ALL;
 
-USE work.axi_lite_pkg.ALL;
+  USE work.axi_lite_pkg.ALL;
 
 PACKAGE axi_pkg IS
 
@@ -168,6 +168,26 @@ PACKAGE axi_pkg IS
     SIGNAL   axi_out : IN  t_axil_ports_out
   );
 
+  -- Drives a single AXI4-Lite write transaction against axi_lite_pkg's nested records
+  -- (axi_lite_m2s_t/axi_lite_s2m_t), e.g. axi_lite_register_file or axi_lite_pri_arbiter ports.
+  PROCEDURE axi_lite_write(
+    CONSTANT addr : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    CONSTANT data : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL   clk  : IN  STD_LOGIC;
+    SIGNAL   m2s  : OUT axi_lite_m2s_t;
+    SIGNAL   s2m  : IN  axi_lite_s2m_t
+  );
+
+  -- Drives a single AXI4-Lite read transaction and returns data, against axi_lite_pkg's
+  -- nested records (axi_lite_m2s_t/axi_lite_s2m_t).
+  PROCEDURE axi_lite_read(
+    CONSTANT addr : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    VARIABLE data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL   clk  : IN  STD_LOGIC;
+    SIGNAL   m2s  : OUT axi_lite_m2s_t;
+    SIGNAL   s2m  : IN  axi_lite_s2m_t
+  );
+
   -- Drives a single AXI4-Stream transaction (valid/ready handshake).
   PROCEDURE axis_push(
     SIGNAL   clk      : IN  STD_LOGIC;
@@ -230,39 +250,39 @@ END PACKAGE axi_pkg;
 PACKAGE BODY axi_pkg IS
 
   FUNCTION to_axi_lite_m2s(ports_in : t_axil_ports_in) RETURN axi_lite_m2s_t IS
-    VARIABLE result : axi_lite_m2s_t := axi_lite_m2s_init;
+    VARIABLE v_result : axi_lite_m2s_t := axi_lite_m2s_init;
   BEGIN
-    result.write.aw.valid := ports_in.S_AXI_AWVALID;
-    result.write.aw.addr(ports_in.S_AXI_AWADDR'RANGE) := u_unsigned(ports_in.S_AXI_AWADDR);
+    v_result.write.aw.valid := ports_in.S_AXI_AWVALID;
+    v_result.write.aw.addr(ports_in.S_AXI_AWADDR'RANGE) := u_unsigned(ports_in.S_AXI_AWADDR);
 
-    result.write.w.valid := ports_in.S_AXI_WVALID;
-    result.write.w.data(ports_in.S_AXI_WDATA'RANGE) := ports_in.S_AXI_WDATA;
-    result.write.w.strb(ports_in.S_AXI_WSTRB'RANGE) := ports_in.S_AXI_WSTRB;
+    v_result.write.w.valid := ports_in.S_AXI_WVALID;
+    v_result.write.w.data(ports_in.S_AXI_WDATA'RANGE) := ports_in.S_AXI_WDATA;
+    v_result.write.w.strb(ports_in.S_AXI_WSTRB'RANGE) := ports_in.S_AXI_WSTRB;
 
-    result.write.b.ready := ports_in.S_AXI_BREADY;
+    v_result.write.b.ready := ports_in.S_AXI_BREADY;
 
-    result.read.ar.valid := ports_in.S_AXI_ARVALID;
-    result.read.ar.addr(ports_in.S_AXI_ARADDR'RANGE) := u_unsigned(ports_in.S_AXI_ARADDR);
+    v_result.read.ar.valid := ports_in.S_AXI_ARVALID;
+    v_result.read.ar.addr(ports_in.S_AXI_ARADDR'RANGE) := u_unsigned(ports_in.S_AXI_ARADDR);
 
-    result.read.r.ready := ports_in.S_AXI_RREADY;
+    v_result.read.r.ready := ports_in.S_AXI_RREADY;
 
-    RETURN result;
+    RETURN v_result;
   END FUNCTION;
 
   FUNCTION to_axil_ports_out(s2m : axi_lite_s2m_t) RETURN t_axil_ports_out IS
-    VARIABLE result : t_axil_ports_out := c_axil_ports_out_init;
+    VARIABLE v_result : t_axil_ports_out := c_axil_ports_out_init;
   BEGIN
-    result.S_AXI_AWREADY := s2m.write.aw.ready;
-    result.S_AXI_WREADY  := s2m.write.w.ready;
-    result.S_AXI_BVALID  := s2m.write.b.valid;
-    result.S_AXI_BRESP   := s2m.write.b.resp;
+    v_result.S_AXI_AWREADY := s2m.write.aw.ready;
+    v_result.S_AXI_WREADY  := s2m.write.w.ready;
+    v_result.S_AXI_BVALID  := s2m.write.b.valid;
+    v_result.S_AXI_BRESP   := s2m.write.b.resp;
 
-    result.S_AXI_ARREADY := s2m.read.ar.ready;
-    result.S_AXI_RVALID  := s2m.read.r.valid;
-    result.S_AXI_RDATA   := s2m.read.r.data(result.S_AXI_RDATA'RANGE);
-    result.S_AXI_RRESP   := s2m.read.r.resp;
+    v_result.S_AXI_ARREADY := s2m.read.ar.ready;
+    v_result.S_AXI_RVALID  := s2m.read.r.valid;
+    v_result.S_AXI_RDATA   := s2m.read.r.data(v_result.S_AXI_RDATA'RANGE);
+    v_result.S_AXI_RRESP   := s2m.read.r.resp;
 
-    RETURN result;
+    RETURN v_result;
   END FUNCTION;
 
   PROCEDURE axi_write(
@@ -371,6 +391,80 @@ PACKAGE BODY axi_pkg IS
       END IF;
     END LOOP r_loop;
     axi_in.S_AXI_RREADY <= '0';
+  END PROCEDURE axi_lite_read;
+
+  PROCEDURE axi_lite_write(
+    CONSTANT addr : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    CONSTANT data : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL   clk  : IN  STD_LOGIC;
+    SIGNAL   m2s  : OUT axi_lite_m2s_t;
+    SIGNAL   s2m  : IN  axi_lite_s2m_t
+  ) IS
+    VARIABLE v_aw_done : BOOLEAN := FALSE;
+    VARIABLE v_w_done  : BOOLEAN := FALSE;
+  BEGIN
+    REPORT "Writing AXI-Lite address: " & TO_HSTRING(addr) & " data: " & TO_HSTRING(data);
+
+    WAIT UNTIL RISING_EDGE(clk);
+    m2s.write.aw.addr(addr'RANGE) <= u_unsigned(addr);
+    m2s.write.aw.valid            <= '1';
+    m2s.write.w.data(data'RANGE)  <= data;
+    m2s.write.w.strb(3 DOWNTO 0)  <= "1111";
+    m2s.write.w.valid             <= '1';
+
+    write_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      IF NOT v_aw_done AND s2m.write.aw.ready = '1' THEN
+        v_aw_done := TRUE;
+        m2s.write.aw.valid <= '0';
+      END IF;
+      IF NOT v_w_done AND s2m.write.w.ready = '1' THEN
+        v_w_done := TRUE;
+        m2s.write.w.valid <= '0';
+      END IF;
+      EXIT write_loop WHEN v_aw_done AND v_w_done;
+    END LOOP write_loop;
+
+    -- Write response phase
+    m2s.write.b.ready <= '1';
+    b_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      EXIT b_loop WHEN s2m.write.b.valid = '1';
+    END LOOP b_loop;
+    m2s.write.b.ready <= '0';
+  END PROCEDURE axi_lite_write;
+
+  PROCEDURE axi_lite_read(
+    CONSTANT addr : IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+    VARIABLE data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    SIGNAL   clk  : IN  STD_LOGIC;
+    SIGNAL   m2s  : OUT axi_lite_m2s_t;
+    SIGNAL   s2m  : IN  axi_lite_s2m_t
+  ) IS
+  BEGIN
+    REPORT "Reading AXI-Lite address: " & TO_HSTRING(addr);
+
+    WAIT UNTIL RISING_EDGE(clk);
+    m2s.read.ar.addr(addr'RANGE) <= u_unsigned(addr);
+    m2s.read.ar.valid            <= '1';
+
+    ar_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      IF s2m.read.ar.ready = '1' THEN
+        EXIT ar_loop;
+      END IF;
+    END LOOP ar_loop;
+    m2s.read.ar.valid <= '0';
+
+    m2s.read.r.ready <= '1';
+    r_loop : LOOP
+      WAIT UNTIL RISING_EDGE(clk);
+      IF s2m.read.r.valid = '1' THEN
+        data := STD_LOGIC_VECTOR(s2m.read.r.data(data'RANGE));
+        EXIT r_loop;
+      END IF;
+    END LOOP r_loop;
+    m2s.read.r.ready <= '0';
   END PROCEDURE axi_lite_read;
 
   PROCEDURE axis_push(

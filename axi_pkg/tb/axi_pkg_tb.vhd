@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
--- Testbench : axi_pkg_tb
--- Purpose   : Unit tests for axi_pkg's records and axi_write bus-driver
+-- Testbench   : axi_pkg_tb
+-- Description : Unit tests for axi_pkg's records and axi_write bus-driver
 --             procedure. Exercised against an always-ready AXI4 slave stub
 --             (no DUT -- axi_pkg is a package, not an entity).
 --------------------------------------------------------------------------------

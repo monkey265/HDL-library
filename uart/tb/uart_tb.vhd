@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
--- Testbench : uart_tb
--- Purpose   : Unit tests for uart_tx and uart_rx modules, verifying serial
+-- Testbench   : uart_tb
+-- Description : Unit tests for uart_tx and uart_rx modules, verifying serial
 --             transmission, reception, and loopback communication in accordance
 --             with the project's VUnit style and VHDL guideline.
 --------------------------------------------------------------------------------
