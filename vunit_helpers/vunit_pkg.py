@@ -151,25 +151,34 @@ class vunit_pkg:
         return all_ok
 
     @staticmethod
-    def handle_surfer(lib, output_path: Path, root: Path | None = None):
-        """Launch Surfer on the generated waveform dump with the wavedisp command file."""
+    def handle_surfer(lib, output_path: Path, ran_testbenches: set[str], root: Path | None = None):
+        """Launch Surfer on the waveform dump of a testbench actually run this invocation."""
         if not shutil.which("surfer"):
             print("ERROR: surfer executable not found on PATH.", file=sys.stderr)
             return
 
         for tb in lib.get_test_benches():
+            if tb.name not in ran_testbenches:
+                continue
+
             dump_fst = output_path / f"{tb.name}.fst"
             dump_vcd = output_path / f"{tb.name}.vcd"
             dump_file = dump_fst if dump_fst.exists() else (dump_vcd if dump_vcd.exists() else None)
-            if dump_file:
-                wave_py = vunit_pkg.find_wave_file(tb.name, root=root)
-                if wave_py:
-                    sucl_file = output_path / "wavedisp" / f"{tb.name}.sucl"
-                    vunit_pkg.generate_wave_script(wave_py, "surfer", sucl_file)
-                    cmd = ["surfer", str(dump_file), "--command-file", str(sucl_file)]
-                    print(f"Launching Surfer: {' '.join(cmd)}")
-                    subprocess.call(cmd)
-                    break
+            if dump_file is None:
+                print(f"ERROR: no waveform dump found for '{tb.name}'.", file=sys.stderr)
+                continue
+
+            wave_py = vunit_pkg.find_wave_file(tb.name, root=root)
+            if wave_py is None:
+                print(f"ERROR: no .wave.py description found for '{tb.name}'.", file=sys.stderr)
+                continue
+
+            sucl_file = output_path / "wavedisp" / f"{tb.name}.sucl"
+            vunit_pkg.generate_wave_script(wave_py, "surfer", sucl_file)
+            cmd = ["surfer", str(dump_file), "--command-file", str(sucl_file)]
+            print(f"Launching Surfer: {' '.join(cmd)}")
+            subprocess.call(cmd)
+            break
 
     # ---------------------------------------------------------------------------
     # ---------------------------------------------------------------------------
@@ -254,7 +263,9 @@ class vunit_pkg:
                 )
 
             if args.surfer:
-                vunit_pkg.handle_surfer(lib, out_path, root=root)
+                report = results.get_report()
+                ran_testbenches = {name.split(".")[1] for name in report.tests}
+                vunit_pkg.handle_surfer(lib, out_path, ran_testbenches, root=root)
 
         has_post_run = enable_coverage or args.surfer
         vu.main(post_run=post_run_handler if has_post_run else None)
