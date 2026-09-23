@@ -2,8 +2,8 @@
 
 <!-- SHIELDS_START -->
 [![CI](https://github.com/monkey265/HDL-library/actions/workflows/ci.yml/badge.svg)](https://github.com/monkey265/HDL-library/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-31%20passed-brightgreen)](#test-results)
-[![Coverage](https://img.shields.io/badge/coverage-40.0%25-red)](#code-coverage)
+[![Tests](https://img.shields.io/badge/tests-1%20failed%20%2F%2032%20total-red)](#test-results)
+[![Coverage](https://img.shields.io/badge/coverage-39.6%25-red)](#code-coverage)
 [![Simulator](https://img.shields.io/badge/simulator-NVC-blue)](#nvc)
 [![Code Style: VSG](https://img.shields.io/badge/code%20style-VSG-blueviolet)](#vhdl-linting--code-formatting-vsg)
 <!-- SHIELDS_END -->
@@ -21,15 +21,17 @@ Everything is provided with VUnit testbench.
 <!-- TEST_RESULTS_START -->
 | Testbench | Tests | Passing | Failing | Status | Simulator |
 | :--- | :---: | :---: | :---: | :---: | :---: |
+| `axi_lite_pri_arbiter_tb` | 1 | 0 | 1 | :x: Fail | NVC |
 | `axi_pkg_tb` | 6 | 6 | 0 | :white_check_mark: Pass | NVC |
 | `tb_pkg_tb` | 17 | 17 | 0 | :white_check_mark: Pass | NVC |
 | `uart_tb` | 8 | 8 | 0 | :white_check_mark: Pass | NVC |
 
 <details>
-<summary><b>Detailed Test Cases (31 passed, 0 failed)</b></summary>
+<summary><b>Detailed Test Cases (31 passed, 1 failed)</b></summary>
 
 | Testbench | Test Case | Status | Duration |
 | :--- | :--- | :---: | :---: |
+| `axi_lite_pri_arbiter_tb` | `test_basic` | :x: Fail | 0.1s |
 | `axi_pkg_tb` | `test_axi_write_back_to_back` | :white_check_mark: Pass | 0.1s |
 | `axi_pkg_tb` | `test_axi_write_drives_address_and_data` | :white_check_mark: Pass | 0.1s |
 | `axi_pkg_tb` | `test_axis_pop` | :white_check_mark: Pass | 0.1s |
@@ -38,7 +40,7 @@ Everything is provided with VUnit testbench.
 | `axi_pkg_tb` | `test_stream_wrappers` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_debug_mode_toggle` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_file_round_trip_real` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_file_round_trip_slv` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_file_round_trip_slv` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_format_hex` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_get_wait_cycles` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_my_is_equal_pass_path` | :white_check_mark: Pass | 0.1s |
@@ -48,19 +50,19 @@ Everything is provided with VUnit testbench.
 | `tb_pkg_tb` | `test_random_integer_in_range` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_random_vector_is_deterministic_for_same_seeds` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_rssi_half_db_to_dbm` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.4s |
-| `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.3s |
+| `tb_pkg_tb` | `test_scale_real_to_slv_clamps_out_of_range_input` | :white_check_mark: Pass | 0.1s |
+| `tb_pkg_tb` | `test_scale_round_trip` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_strobe_pulses_for_two_periods` | :white_check_mark: Pass | 0.1s |
-| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.2s |
+| `tb_pkg_tb` | `test_vec2string_bit_order` | :white_check_mark: Pass | 0.1s |
 | `tb_pkg_tb` | `test_wait_cycles` | :white_check_mark: Pass | 0.1s |
 | `uart_tb` | `test_uart_rx_receives_byte_cd` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.2s |
-| `uart_tb` | `test_uart_tx_parity_even` | :white_check_mark: Pass | 0.2s |
-| `uart_tb` | `test_uart_tx_parity_odd` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_tx_back_to_back` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_parity_even` | :white_check_mark: Pass | 0.1s |
+| `uart_tb` | `test_uart_tx_parity_odd` | :white_check_mark: Pass | 0.1s |
 | `uart_tb` | `test_uart_tx_reset_behavior` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_tx_rx_loopback` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_tx_rx_loopback` | :white_check_mark: Pass | 0.1s |
 | `uart_tb` | `test_uart_tx_sends_byte_ab` | :white_check_mark: Pass | 0.1s |
-| `uart_tb` | `test_uart_write_byte_procedure` | :white_check_mark: Pass | 0.2s |
+| `uart_tb` | `test_uart_write_byte_procedure` | :white_check_mark: Pass | 0.1s |
 
 </details>
 <!-- TEST_RESULTS_END -->
@@ -70,12 +72,14 @@ Everything is provided with VUnit testbench.
 <!-- COVERAGE_START -->
 | Source File | Lines | Line Coverage | Branch Coverage |
 | :--- | :---: | :---: | :---: |
+| `axi_lite_pri_arbiter.vhd` | 18 / 50 | 36.0% | 26.9% |
+| `axi_lite_pri_arbiter_tb.vhd` | 7 / 18 | 38.9% | 0.0% |
 | `axi_pkg_tb.vhd` | 21 / 67 | 31.3% | 14.3% |
 | `tb_pkg_tb.vhd` | 7 / 84 | 8.3% | 5.6% |
 | `uart_rx.vhd` | 84 / 121 | 69.4% | 60.6% |
 | `uart_tb.vhd` | 33 / 145 | 22.8% | 20.0% |
 | `uart_tx.vhd` | 55 / 83 | 66.3% | 62.5% |
-| **Overall Total** | **200 / 500** | **40.0%** | **42.4%** |
+| **Overall Total** | **225 / 568** | **39.6%** | **38.3%** |
 <!-- COVERAGE_END -->
 
 ## Roadmap / TODO
